@@ -31,7 +31,11 @@ class Mahasiswa extends CI_Controller {
             $data['nama'] = $nama;
             $data['tanggal_lahir'] = $tanggal_lahir;
 
-            $this->m_mahasiswa->tambah($data);
+            $last_id = $this->m_mahasiswa->tambah($data);
+
+            if (!empty($_FILES['file'])) {
+                move_uploaded_file($_FILES['file']['tmp_name'], 'uploads/mahasiswa/' . $last_id);
+            }
         }
 
         echo json_encode($result);
@@ -99,6 +103,8 @@ class Mahasiswa extends CI_Controller {
             $row[] = $item->npm;
             $row[] = $item->nama;
             $row[] = $this->pustaka->tanggal_indo_string($item->tanggal_lahir);
+            $img = 'uploads/mahasiswa/' . $item->id;
+            $row[] = '<img src="' . $img . '" width="100px" height="100px">';
             $ubah = 'submit("' . "ubah" . '", "' . $item->id . '")';
             $hapus = 'hapus("' . $item->id . '")';
             $row[] = "<a class='btn btn-info' data-toggle='modal' data-target='#form' onclick='" . $ubah . "'><i class='fa fa-pencil'></i></a>

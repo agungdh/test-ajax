@@ -21,6 +21,10 @@
           <td><input type="text" name="tanggal_lahir" id="tanggal_lahir" placeholder="Tanggal Lahir" class="form-control"></td>
         </tr>
         <tr>
+          <td>Foto</td>
+          <td><input type="file" name="foto" id="foto" class="form-control"></td>
+        </tr>
+        <tr>
           <td></td>
           <td>
             <button type="button" data-dismiss="modal" class="btn btn-default">Batal</button>

@@ -56,6 +56,7 @@ $(document).ready(function() {
                     <th>NPM</th>
                     <th>NAMA</th>
                     <th>TANGGAL LAHIR</th>
+                    <th>FOTO</th>
                     <th>PROSES</th>
         </tr>
       </thead>
@@ -67,10 +68,11 @@ $(document).ready(function() {
 
 <script type="text/javascript">
 $("#form").on("hidden.bs.modal", function () {
-    $("[name='id']").val('');
-    $("[name='npm']").val('');
-    $("[name='nama']").val('');
-    $("[name='tanggal_lahir']").val('');
+    $("input[name='id']").val('');
+    $("input[name='npm']").val('');
+    $("input[name='nama']").val('');
+    $("input[name='tanggal_lahir']").val('');
+    $("input[name='foto']").val('');
 });
 
 function hapus(id) {
@@ -101,11 +103,11 @@ function hapus(id) {
 }
 
 function ubah() {
-  var id = $("[name='id']").val();
-  var npm = $("[name='npm']").val();
-  var nama = $("[name='nama']").val();
+  var id = $("input[name='id']").val();
+  var npm = $("input[name='npm']").val();
+  var nama = $("input[name='nama']").val();
   
-  var tanggal_lahir_raw = $("[name='tanggal_lahir']").val();
+  var tanggal_lahir_raw = $("input[name='tanggal_lahir']").val();
   
   if (tanggal_lahir_raw != '') {
     var tanggal = tanggal_lahir_raw.substring(0,2);
@@ -140,10 +142,10 @@ function ubah() {
 }
 
 function tambah() {
-  var npm = $("[name='npm']").val();
-  var nama = $("[name='nama']").val();
+  var npm = $("input[name='npm']").val();
+  var nama = $("input[name='nama']").val();
   
-  var tanggal_lahir_raw = $("[name='tanggal_lahir']").val();
+  var tanggal_lahir_raw = $("input[name='tanggal_lahir']").val();
   
   if (tanggal_lahir_raw != '') {
     var tanggal = tanggal_lahir_raw.substring(0,2);
@@ -154,11 +156,21 @@ function tambah() {
     var tanggal_lahir = '';
   }
 
+  var fd = new FormData();
+  // if ($('input[name=foto]').get(0).files.length === 0) {
+  //   //
+  // } else {
+  //   //
+  // }
+  fd.append('file', $('input[name=foto]')[0].files[0]);
+  fd.append('npm', npm);
+  fd.append('nama', nama);
+  fd.append('tanggal_lahir', tanggal_lahir);
   $.ajax({
     type: 'POST',
-    data: 'npm=' + npm 
-          + '&nama=' + nama 
-          + '&tanggal_lahir=' + tanggal_lahir,
+    data: fd,
+    contentType: false,
+    processData: false,
     url: "<?php echo base_url('mahasiswa/tambah'); ?>",
     dataType: 'json',
     success: function (hasil) {
@@ -189,15 +201,15 @@ function submit(aksi, id = '') {
       url: '<?php echo base_url("mahasiswa/ambil_id"); ?>',
       dataType: 'json',
       success: function (hasil) {
-        $("[name='npm']").val(hasil.npm);
-        $("[name='nama']").val(hasil.nama);
+        $("input[name='npm']").val(hasil.npm);
+        $("input[name='nama']").val(hasil.nama);
         var tanggal_lahir_raw = hasil.tanggal_lahir;
         var tanggal = tanggal_lahir_raw.substr(8,2);
         var bulan = tanggal_lahir_raw.substr(5,2);
         var tahun = tanggal_lahir_raw.substr(0,4);
         var tanggal_lahir = tanggal + '-' + bulan + '-' + tahun;
-        $("[name='tanggal_lahir']").val(tanggal_lahir);
-        $("[name='id']").val(id);
+        $("input[name='tanggal_lahir']").val(tanggal_lahir);
+        $("input[name='id']").val(id);
       },
       error: function(XMLHttpRequest, textStatus, errorThrown) {
         swal("Oops...", "Something went wrong!", "error");

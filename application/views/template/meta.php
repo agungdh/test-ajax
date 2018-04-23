@@ -41,6 +41,7 @@
     <script type="text/javascript" language="javascript" src="<?php echo base_url() . "assets/"; ?>plugins/chartjs/Chart.bundle.js"></script>
     <script type="text/javascript" language="javascript" src="<?php echo base_url() . "assets/"; ?>swal/swal.js"></script>
     <script type="text/javascript" language="javascript" src="<?php echo base_url() . "assets/"; ?>bootstrap-datepicker/js/bootstrap-datepicker.min.js"></script>
+    <script type="text/javascript" language="javascript" src="<?php echo base_url() . "assets/"; ?>uploader/file.js"></script>
     
     <!-- Bootstrap 3.3.5 -->
     <script type="text/javascript" language="javascript" src="<?php echo base_url() . "assets/"; ?>bootstrap/js/bootstrap.min.js"></script>
