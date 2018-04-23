@@ -118,12 +118,23 @@ function ubah() {
     var tanggal_lahir = '';
   }
 
+  var fd = new FormData();
+  // if ($('input[name=foto]').get(0).files.length === 0) {
+  //   //
+  // } else {
+  //   //
+  // }
+  fd.append('file', $('input[name=foto]')[0].files[0]);
+  fd.append('id', id);
+  fd.append('npm', npm);
+  fd.append('nama', nama);
+  fd.append('tanggal_lahir', tanggal_lahir);
+
   $.ajax({
     type: 'POST',
-    data: 'id=' + id
-           + '&npm=' + npm
-           + '&nama=' + nama
-           + '&tanggal_lahir=' + tanggal_lahir,
+    data: fd,
+    contentType: false,
+    processData: false,
     url: "<?php echo base_url('mahasiswa/ubah'); ?>",
     dataType: 'json',
     success: function (hasil) {

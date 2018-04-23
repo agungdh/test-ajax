@@ -65,6 +65,10 @@ class Mahasiswa extends CI_Controller {
             $where['id'] = $id;
 
             $this->m_mahasiswa->ubah($data, $where);
+
+            if (!empty($_FILES['file'])) {
+                move_uploaded_file($_FILES['file']['tmp_name'], 'uploads/mahasiswa/' . $id);
+            }
         }
 
         echo json_encode($result);
