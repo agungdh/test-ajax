@@ -94,7 +94,7 @@ function hapus(id) {
       data: fd,
       contentType: false,
       processData: false,
-      url: "<?php echo base_url('mahasiswa/hapus'); ?>",
+      url: "<?php echo base_url('mahasiswa_nofile/hapus'); ?>",
       dataType: 'json',
       success: function (hasil) {
         table.ajax.reload();
@@ -123,20 +123,20 @@ function ubah() {
   }
 
   var fd = new FormData();
-  fd.append('id', id);
-  fd.append('npm', npm);
-  fd.append('nama', nama);
-  fd.append('tanggal_lahir', tanggal_lahir);
+  fd.append('where[id]', id);
+  fd.append('data[npm]', npm);
+  fd.append('data[nama]', nama);
+  fd.append('data[tanggal_lahir]', tanggal_lahir);
 
   $.ajax({
     type: 'POST',
     data: fd,
     contentType: false,
     processData: false,
-    url: "<?php echo base_url('mahasiswa/ubah'); ?>",
+    url: "<?php echo base_url('mahasiswa_nofile/ubah'); ?>",
     dataType: 'json',
     success: function (hasil) {
-      if (hasil.pesan != '') {
+      if (hasil.status != 'ok') {
         swal("Peringatan", hasil.pesan, "error");
       } else {
         table.ajax.reload();
@@ -166,18 +166,18 @@ function tambah() {
   }
 
   var fd = new FormData();
-  fd.append('npm', npm);
-  fd.append('nama', nama);
-  fd.append('tanggal_lahir', tanggal_lahir);
+  fd.append('data[npm]', npm);
+  fd.append('data[nama]', nama);
+  fd.append('data[tanggal_lahir]', tanggal_lahir);
   $.ajax({
     type: 'POST',
     data: fd,
     contentType: false,
     processData: false,
-    url: "<?php echo base_url('mahasiswa/tambah'); ?>",
+    url: "<?php echo base_url('mahasiswa_nofile/tambah'); ?>",
     dataType: 'json',
     success: function (hasil) {
-      if (hasil.pesan != '') {
+      if (hasil.status != 'ok') {
         swal("Peringatan", hasil.pesan, "error");
       } else {
         table.ajax.reload();
@@ -198,10 +198,14 @@ function submit(aksi, id = '') {
     $('#btn-tambah').hide();
     $('#btn-ubah').show();
 
+    var fd = new FormData();
+    fd.append('where[id]', id);
     $.ajax({
       type: 'POST',
-      data: 'id=' + id,
-      url: '<?php echo base_url("mahasiswa/ambil_id"); ?>',
+      data: fd,
+      contentType: false,
+      processData: false,
+      url: '<?php echo base_url("mahasiswa_nofile/ambil_id"); ?>',
       dataType: 'json',
       success: function (hasil) {
         $("input[name='npm']").val(hasil.npm);

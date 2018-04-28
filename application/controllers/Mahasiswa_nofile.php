@@ -2,9 +2,15 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Mahasiswa_nofile extends CI_Controller {
+    var $table;
+    var $result;
+
 	function __construct(){
 		parent::__construct();
-        $this->load->model('m_mahasiswa_nofile');
+        $this->load->model('m_universal');
+
+        $this->table = "mahasiswa_nofile";
+        $this->result['status'] = "ok";
 	}
 
 	function index() {
@@ -14,60 +20,27 @@ class Mahasiswa_nofile extends CI_Controller {
 	}
 
     function tambah() {
-        $npm = $this->input->post('npm');
-        $nama = $this->input->post('nama');
-        $tanggal_lahir = $this->input->post('tanggal_lahir');
-
-        if ($npm == '') {
-            $result['pesan'] = "NPM Harus Diisi !!!";
-        } elseif ($nama == '') {
-            $result['pesan'] = "Nama Harus Diisi !!!";
-        } elseif ($tanggal_lahir == '') {
-            $result['pesan'] = "Tanggal Lahir Harus Diisi !!!";
-        } else {
-            $result['pesan'] = "";
-
-            $data['npm'] = $npm;
-            $data['nama'] = $nama;
-            $data['tanggal_lahir'] = $tanggal_lahir;
-
-            $last_id = $this->m_mahasiswa_nofile->tambah($data);
+        foreach ($this->input->post('data') as $key => $value) {
+            $data[$key] = $value;
         }
 
-        echo json_encode($result);
+        $last_id = $this->m_universal->tambah($this->table, $data);
+
+        echo json_encode($this->result);
     }
 
     function ubah() {
-        $id = $this->input->post('id');
-        $npm = $this->input->post('npm');
-        $nama = $this->input->post('nama');
-        $tanggal_lahir = $this->input->post('tanggal_lahir');
-
-        if ($id == '') {
-            $result['pesan'] = "ID Kosong !!!";
-        } elseif ($npm == '') {
-            $result['pesan'] = "NPM Harus Diisi !!!";
-        } elseif ($nama == '') {
-            $result['pesan'] = "Nama Harus Diisi !!!";
-        } elseif ($tanggal_lahir == '') {
-            $result['pesan'] = "Tanggal Lahir Harus Diisi !!!";
-        } else {
-            $result['pesan'] = "";
-
-            $data['npm'] = $npm;
-            $data['nama'] = $nama;
-            $data['tanggal_lahir'] = $tanggal_lahir;
-
-            $where['id'] = $id;
-
-            $this->m_mahasiswa_nofile->ubah($data, $where);
-
-            if (!empty($_FILES['file'])) {
-                move_uploaded_file($_FILES['file']['tmp_name'], 'uploads/mahasiswa/' . $id);
-            }
+        foreach ($this->input->post('data') as $key => $value) {
+            $data[$key] = $value;
         }
 
-        echo json_encode($result);
+        foreach ($this->input->post('where') as $key => $value) {
+            $where[$key] = $value;
+        }
+
+        $this->m_universal->ubah($this->table, $data, $where);
+
+        echo json_encode($this->result);
     }
 
     function hapus() {
@@ -75,19 +48,22 @@ class Mahasiswa_nofile extends CI_Controller {
 
         $where['id'] = $id;
 
-        $this->m_mahasiswa_nofile->hapus($where);
+        $this->m_universal->hapus($this->table, $where);
         
         $result['pesan'] = "";
         echo json_encode($result);
     }
 
     function ambil_id() {
-        $id = $this->input->post('id');
-        echo json_encode($this->m_mahasiswa_nofile->ambil_id($id));
+        foreach ($this->input->post('where') as $key => $value) {
+            $where[$key] = $value;
+        }
+
+        echo json_encode($this->m_universal->ambil_where($this->table, $where));
     }
 
 	function ajax() {
-		$var['table'] = 'mahasiswa';
+		$var['table'] = $this->table;
 	    $var['column_order'] = array(null, 'npm', 'nama', 'tanggal_lahir');
 	    $var['column_search'] = array('npm', 'nama', 'tanggal_lahir');
 	    $var['order'] = array('id' => 'asc');
