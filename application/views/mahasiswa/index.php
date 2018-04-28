@@ -84,7 +84,7 @@ function hapus(id) {
     showCancelButton: true,
     confirmButtonColor: "#DD6B55",
     confirmButtonText: "Yes, delete it!",
-    closeOnConfirm: false,
+    closeOnConfirm: true,
     html: false
   }, function(){
     $.ajax({
@@ -94,7 +94,6 @@ function hapus(id) {
       dataType: 'json',
       success: function (hasil) {
         table.ajax.reload();
-        swal("Terhapus!", "File Anda Telah Terhapus !!!", "success");
       },
       error: function(XMLHttpRequest, textStatus, errorThrown) {
         swal("Oops...", "Something went wrong!", "error");
