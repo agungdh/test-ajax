@@ -87,9 +87,14 @@ function hapus(id) {
     closeOnConfirm: true,
     html: false
   }, function(){
+    var fd = new FormData();    
+    fd.append('id', id);
+
     $.ajax({
       type: 'POST',
-      data: 'id=' + id,
+      data: fd,
+      contentType: false,
+      processData: false,
       url: "<?php echo base_url('mahasiswa/hapus'); ?>",
       dataType: 'json',
       success: function (hasil) {
