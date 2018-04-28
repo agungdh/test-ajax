@@ -1,36 +1,34 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Mahasiswa_nofile extends CI_Controller {
-    var $table;
+class Universal extends CI_Controller {
     var $result;
 
 	function __construct(){
 		parent::__construct();
         $this->load->model('m_universal');
 
-        $this->table = "mahasiswa_nofile";
         $this->result['status'] = "ok";
 	}
 
-	function index() {
+	function index($table) {
 		$data['isi'] = "mahasiswa_nofile/index";
-        $data['data']['table'] = $this->table;
+        $data['data']['table'] = $table;
 
 		$this->load->view("template/template", $data);
 	}
 
-    function tambah() {
+    function tambah($table) {
         foreach ($this->input->post('data') as $key => $value) {
             $data[$key] = $value;
         }
 
-        $last_id = $this->m_universal->tambah($this->table, $data);
+        $last_id = $this->m_universal->tambah($table, $data);
 
         echo json_encode($this->result);
     }
 
-    function ubah() {
+    function ubah($table) {
         foreach ($this->input->post('data') as $key => $value) {
             $data[$key] = $value;
         }
@@ -39,32 +37,32 @@ class Mahasiswa_nofile extends CI_Controller {
             $where[$key] = $value;
         }
 
-        $this->m_universal->ubah($this->table, $data, $where);
+        $this->m_universal->ubah($table, $data, $where);
 
         echo json_encode($this->result);
     }
 
-    function hapus() {
+    function hapus($table) {
         $id = $this->input->post('id');
 
         $where['id'] = $id;
 
-        $this->m_universal->hapus($this->table, $where);
+        $this->m_universal->hapus($table, $where);
         
         $result['pesan'] = "";
         echo json_encode($result);
     }
 
-    function ambil_id() {
+    function ambil_id($table) {
         foreach ($this->input->post('where') as $key => $value) {
             $where[$key] = $value;
         }
 
-        echo json_encode($this->m_universal->ambil_where($this->table, $where));
+        echo json_encode($this->m_universal->ambil_where($table, $where));
     }
 
-	function ajax() {
-		$var['table'] = $this->table;
+	function ajax($table) {
+		$var['table'] = $table;
 	    $var['column_order'] = array(null, 'npm', 'nama', 'tanggal_lahir');
 	    $var['column_search'] = array('npm', 'nama', 'tanggal_lahir');
 	    $var['order'] = array('id' => 'asc');

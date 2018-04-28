@@ -18,7 +18,7 @@ $(document).ready(function() {
  
         // Load data for the table's content from an Ajax source
         "ajax": {
-            "url": "<?php echo base_url('mahasiswa_nofile/ajax')?>",
+            "url": "<?php echo base_url($data['table'] . '/ajax')?>",
             "type": "POST"
         },
  
@@ -64,7 +64,7 @@ $(document).ready(function() {
   </div><!-- /.boxbody -->
 </div><!-- /.box -->
 
-<?php $this->load->view('mahasiswa_nofile/form'); ?>
+<?php $this->load->view($data['table'] . '/form'); ?>
 
 <script type="text/javascript">
 $("#form").on("hidden.bs.modal", function () {
@@ -87,14 +87,14 @@ function hapus(id) {
     html: false
   }, function(){
     var fd = new FormData();    
-    fd.append('id', id);
+    fd.append('where[id]', id);
 
     $.ajax({
       type: 'POST',
       data: fd,
       contentType: false,
       processData: false,
-      url: "<?php echo base_url('mahasiswa_nofile/hapus'); ?>",
+      url: "<?php echo base_url($data['table'] . '/hapus'); ?>",
       dataType: 'json',
       success: function (hasil) {
         table.ajax.reload();
@@ -133,7 +133,7 @@ function ubah() {
     data: fd,
     contentType: false,
     processData: false,
-    url: "<?php echo base_url('mahasiswa_nofile/ubah'); ?>",
+    url: "<?php echo base_url($data['table'] . '/ubah'); ?>",
     dataType: 'json',
     success: function (hasil) {
       if (hasil.status != 'ok') {
@@ -174,7 +174,7 @@ function tambah() {
     data: fd,
     contentType: false,
     processData: false,
-    url: "<?php echo base_url('mahasiswa_nofile/tambah'); ?>",
+    url: "<?php echo base_url($data['table'] . '/tambah'); ?>",
     dataType: 'json',
     success: function (hasil) {
       if (hasil.status != 'ok') {
@@ -205,7 +205,7 @@ function submit(aksi, id = '') {
       data: fd,
       contentType: false,
       processData: false,
-      url: '<?php echo base_url("mahasiswa_nofile/ambil_id"); ?>',
+      url: '<?php echo base_url($data['table'] . "/ambil_id"); ?>',
       dataType: 'json',
       success: function (hasil) {
         $("input[name='npm']").val(hasil.npm);
