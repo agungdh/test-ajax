@@ -37,7 +37,7 @@ $(document).ready(function() {
 
 <div class="box box-primary">
   <div class="box-header with-border">
-    <h4><strong><font color=blue>DATA MAHASISWA</font></strong></h4>
+    <h4><strong><font color=blue>DATA <?php echo strtoupper($data['table']); ?></font></strong></h4>
   </div><!-- /.box-header -->
 
     <div class="box-body">
@@ -46,7 +46,7 @@ $(document).ready(function() {
       
       <button type="button" class="btn btn-success" data-toggle="modal" data-target="#form" onclick="submit('tambah')">
         <i class="fa fa-plus"></i> 
-        Mahasiswa
+        <?php echo ucwords($data['table']); ?>
       </button>
     </div>
 
@@ -54,9 +54,11 @@ $(document).ready(function() {
       <thead>
         <tr>
                     <th>NO</th>
-                    <th>NPM</th>
-                    <th>NAMA</th>
-                    <th>TANGGAL LAHIR</th>
+                    <?php
+                    foreach ($this->db->query("SHOW COLUMNS FROM " . $table . " WHERE Field != 'id'")->result() as $item) {
+                      echo '<th>' . strtoupper(str_replace('_', ' ', $item->Field))  . '</th>';  
+                    }
+                    ?>
                     <th>PROSES</th>
         </tr>
       </thead>

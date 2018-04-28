@@ -12,7 +12,7 @@ class Universal extends CI_Controller {
 	}
 
 	function index($table) {
-		$data['isi'] = "mahasiswa_nofile/index";
+		$data['isi'] = "universal/index";
         $data['data']['table'] = $table;
 
 		$this->load->view("template/template", $data);
@@ -52,7 +52,7 @@ class Universal extends CI_Controller {
         echo json_encode($this->result);
     }
 
-    function ambil_id($table) {
+    function ambil_where($table) {
         foreach ($this->input->post('where') as $key => $value) {
             $where[$key] = $value;
         }
@@ -62,8 +62,13 @@ class Universal extends CI_Controller {
 
 	function ajax($table) {
 		$var['table'] = $table;
-	    $var['column_order'] = array(null, 'npm', 'nama', 'tanggal_lahir');
-	    $var['column_search'] = array('npm', 'nama', 'tanggal_lahir');
+
+        $var['column_order'][] = null;
+        foreach ($this->db->query("SHOW COLUMNS FROM " . $table . " WHERE Field != 'id'")->result() as $item) {
+           $var['column_order'][] = $item->Field;  
+           $var['column_search'][] = $item->Field;  
+         }
+	    
 	    $var['order'] = array('id' => 'asc');
 		
 		$list = $this->m_ajax->get_datatables($var);
@@ -95,5 +100,8 @@ class Universal extends CI_Controller {
         echo json_encode($output);
 	}
 
+    function test($table) {
+        var_dump($this->db->query("SHOW COLUMNS FROM " . $table . " WHERE Field != 'id'")->result());
+    }
 
 }
