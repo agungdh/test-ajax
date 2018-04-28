@@ -43,14 +43,13 @@ class Universal extends CI_Controller {
     }
 
     function hapus($table) {
-        $id = $this->input->post('id');
-
-        $where['id'] = $id;
+        foreach ($this->input->post('where') as $key => $value) {
+            $where[$key] = $value;
+        }
 
         $this->m_universal->hapus($table, $where);
         
-        $result['pesan'] = "";
-        echo json_encode($result);
+        echo json_encode($this->result);
     }
 
     function ambil_id($table) {

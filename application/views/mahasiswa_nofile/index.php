@@ -18,7 +18,7 @@ $(document).ready(function() {
  
         // Load data for the table's content from an Ajax source
         "ajax": {
-            "url": "<?php echo base_url($data['table'] . '/ajax')?>",
+            "url": "<?php echo base_url('universal/' . 'ajax/' . $data['table'])?>",
             "type": "POST"
         },
  
@@ -94,7 +94,7 @@ function hapus(id) {
       data: fd,
       contentType: false,
       processData: false,
-      url: "<?php echo base_url($data['table'] . '/hapus'); ?>",
+      url: "<?php echo base_url('universal/' . 'hapus/' . $data['table']); ?>",
       dataType: 'json',
       success: function (hasil) {
         table.ajax.reload();
@@ -133,7 +133,7 @@ function ubah() {
     data: fd,
     contentType: false,
     processData: false,
-    url: "<?php echo base_url($data['table'] . '/ubah'); ?>",
+    url: "<?php echo base_url('universal/' . 'ubah/' . $data['table']); ?>",
     dataType: 'json',
     success: function (hasil) {
       if (hasil.status != 'ok') {
@@ -174,7 +174,7 @@ function tambah() {
     data: fd,
     contentType: false,
     processData: false,
-    url: "<?php echo base_url($data['table'] . '/tambah'); ?>",
+    url: "<?php echo base_url('universal/' . 'tambah/' . $data['table']); ?>",
     dataType: 'json',
     success: function (hasil) {
       if (hasil.status != 'ok') {
@@ -205,7 +205,7 @@ function submit(aksi, id = '') {
       data: fd,
       contentType: false,
       processData: false,
-      url: '<?php echo base_url($data['table'] . "/ambil_id"); ?>',
+      url: '<?php echo base_url('universal/' . "ambil_id/" . $data['table']); ?>',
       dataType: 'json',
       success: function (hasil) {
         $("input[name='npm']").val(hasil.npm);
